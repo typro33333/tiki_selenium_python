@@ -48,6 +48,8 @@ for url in urls:
         result.append(get_data(url,driver))
     except:
         pass
-json.dump(result,open("./test1.json","w"))
+#rename here
+file_name = "./test1.json"
+json.dump(result,open(file_name,"w"))
 
 driver.close()
