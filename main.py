@@ -2,8 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import json, queue, time
 from threading import Thread
+import pandas as pd
 #setup contrain
 o = webdriver.ChromeOptions()
+#-----------------------------------
+##IF run on window need chromedriver.exe
+o.add_argument("./chromedriver.exe") ## Version chorme now is  90.0.4430.212
+##-----------------------------------
 o.add_argument("disable-features=VizDisplayCompositor")
 o.add_argument("headless")
 o.add_argument("window-size=1200x800")
@@ -51,5 +56,24 @@ for url in urls:
 #rename here
 file_name = "./test1.json"
 json.dump(result,open(file_name,"w"))
+
+#Readfile json again
+f = open('./test1.json',)
+r = json.load(f)
+
+data = []
+for i in r: 
+    data.append(i)
+
+for i in range(len(data)):
+    data[i].update(data[i]['detail'])
+    del data[i]['detail']
+
+file_name = "./data.json"
+json.dump(data,open(file_name,"w"))
+
+#Export json file to csv data
+df = pd.read_json(r'.\data.json')
+df.to_csv(r'.\data.csv')
 
 driver.close()
